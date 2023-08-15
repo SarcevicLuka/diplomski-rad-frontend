@@ -1,7 +1,7 @@
-import HomePage from "../pages/HomePage";
-import LoginPage from "../pages/LoginPage";
-import NotFoundPage from "../pages/NotFoundPage";
-import RegisterPage from "../pages/RegisterPage";
+import Home from "../pages/Home";
+import Login from "../pages/Login";
+import NotFound from "../pages/NotFoundPage";
+import Register from "../pages/Register";
 import { AvailableRoutes } from "./AvailableRoutes";
 import { RouteVisibility } from "./RouteVisibility";
 
@@ -14,20 +14,20 @@ type RouteInformation = {
 const RouteConfiguration: RouteInformation[] = [
   {
     path: AvailableRoutes.Home,
-    component: HomePage,
+    component: Home,
     visibility: RouteVisibility.Everyone,
   },
   {
     path: AvailableRoutes.Login,
-    component: LoginPage,
+    component: Login,
     visibility: RouteVisibility.Everyone,
   },
   {
     path: AvailableRoutes.Register,
-    component: RegisterPage,
+    component: Register,
     visibility: RouteVisibility.Everyone,
   },
-  { path: "*", component: NotFoundPage, visibility: RouteVisibility.Everyone },
+  { path: "*", component: NotFound, visibility: RouteVisibility.Everyone },
 ];
 
 export default RouteConfiguration;

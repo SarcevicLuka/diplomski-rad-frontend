@@ -1,16 +1,13 @@
 import { AvailableRoutes } from "../routes/AvailableRoutes";
 
-const NotFoundPage = () => {
+const NotFound = () => {
   return (
-    <div className="d-flex flex-column align-items-center justify-content-center">
+    <div className="flex flex-column align-items-center justify-content-center">
       <p>404: Page not found</p>
-      <p>
-        You are accessing a url that does not exist or are not authorized to
-        access this page
-      </p>
+      <p>You are accessing a url that does not exist</p>
       <a href={AvailableRoutes.Home}>Go home</a>
     </div>
   );
 };
 
-export default NotFoundPage;
+export default NotFound;

@@ -1,10 +1,14 @@
 //import { useContext } from "react";
 //import { AuthContext } from "../provider/AuthProvider";
 
-function HomePage() {
+function Home() {
   //const { token } = useContext(AuthContext);
 
-  return <>Home</>;
+  return (
+    <>
+      <div>Home Page</div>
+    </>
+  );
 }
 
-export default HomePage;
+export default Home;
