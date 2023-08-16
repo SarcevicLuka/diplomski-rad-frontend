@@ -1,7 +1,7 @@
 import Home from "../pages/Home";
-import Login from "../pages/Login";
+import Login from "../pages/auth/Login";
 import NotFound from "../pages/NotFoundPage";
-import Register from "../pages/Register";
+import Register from "../pages/auth/Register";
 import { AvailableRoutes } from "./AvailableRoutes";
 import { RouteVisibility } from "./RouteVisibility";
 

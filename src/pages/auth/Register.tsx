@@ -4,21 +4,15 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import * as Yup from "yup";
 import classNames from "classnames";
-import { checkErrors } from "../utils/formik";
-import { AvailableRoutes } from "../routes/AvailableRoutes";
+import { checkErrors } from "../../utils/formik";
+import { AvailableRoutes } from "../../routes/AvailableRoutes";
 import { Link } from "react-router-dom";
 import Avatar from "react-avatar-edit";
 import { useState } from "react";
-import { useAxios } from "../hooks/useAxios";
+import { useAxios } from "../../api/hooks/useAxios";
 import { Password } from "primereact/password";
-
-export type RegisterUserData = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  avatar: string;
-};
+import { RegisterUserData } from "./types";
+import { authRoutes } from "../../api/endpoints";
 
 const initialValues: RegisterUserData = {
   firstName: "",
@@ -57,7 +51,7 @@ function Register() {
     actions: FormikHelpers<RegisterUserData>
   ) => {
     axiosInstance
-      .post("auth/register", values)
+      .post(authRoutes.REGISTER, values)
       .then((response) => {
         console.log(response.data);
       })
@@ -73,8 +67,6 @@ function Register() {
       })
       .finally(() => actions.setSubmitting(false));
   };
-
-  const onClose = () => {};
 
   const onBeforeFileLoad = (elem: React.ChangeEvent<HTMLInputElement>) => {
     if (elem.target.files && elem.target.files[0].size > 200000) {
@@ -116,7 +108,6 @@ function Register() {
                   onCrop={(image: string | null) =>
                     setFieldValue("avatar", image)
                   }
-                  onClose={onClose}
                   onBeforeFileLoad={onBeforeFileLoad}
                   shadingOpacity={0.8}
                 />

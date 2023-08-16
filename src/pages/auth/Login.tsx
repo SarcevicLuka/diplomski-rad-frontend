@@ -5,15 +5,12 @@ import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 import * as Yup from "yup";
 import classNames from "classnames";
-import { checkErrors } from "../utils/formik";
+import { checkErrors } from "../../utils/formik";
 import { Link } from "react-router-dom";
-import { AvailableRoutes } from "../routes/AvailableRoutes";
-import { useAxios } from "../hooks/useAxios";
-
-export type LoginUserData = {
-  email: string;
-  password: string;
-};
+import { AvailableRoutes } from "../../routes/AvailableRoutes";
+import { useAxios } from "../../api/hooks/useAxios";
+import { LoginUserData } from "./types";
+import { authRoutes } from "../../api/endpoints";
 
 const initialValues: LoginUserData = {
   email: "",
@@ -40,9 +37,9 @@ function Login() {
     actions: FormikHelpers<LoginUserData>
   ) => {
     axiosInstance
-      .post("auth/login", values)
+      .post(authRoutes.LOGIN, values)
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
       })
       .catch((error) => {
         console.log(error);

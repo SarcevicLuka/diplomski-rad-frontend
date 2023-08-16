@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { AvailableRoutes } from "../routes/AvailableRoutes";
-import { AuthContext } from "../provider/AuthProvider";
+import { AvailableRoutes } from "../../routes/AvailableRoutes";
+import { AuthContext } from "../../provider/AuthProvider";
 import { useContext } from "react";
 
 export function useAxios() {

@@ -1,5 +1,5 @@
 import { FormikErrors, FormikTouched } from "formik";
-import { LoginUserData } from "../pages/Login";
+import { LoginUserData } from "../pages/auth/Login";
 import { ReactNode } from "react";
 import { RegisterUserData } from "../pages/Register";
 
