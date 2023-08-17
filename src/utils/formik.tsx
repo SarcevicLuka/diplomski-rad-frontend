@@ -1,7 +1,7 @@
 import { FormikErrors, FormikTouched } from "formik";
-import { LoginUserData } from "../pages/auth/Login";
+import { LoginUserData } from "../pages/auth/types";
 import { ReactNode } from "react";
-import { RegisterUserData } from "../pages/Register";
+import { RegisterUserData } from "../pages/auth/types";
 
 export const checkErrors = (
   errors: FormikErrors<LoginUserData | RegisterUserData>,
