@@ -7,12 +7,14 @@ import AuthNavButtons from "./AuthNavButtons";
 function NavBar() {
   const start = (
     <div className="flex align-items-center justify-content-center sm:ml-0 md:ml-4">
-      <img
-        alt="logo"
-        src="https://primefaces.org/cdn/primereact/images/logo.png"
-        height="40"
-        className="mr-2"
-      ></img>
+      <Link to={AvailableRoutes.Home}>
+        <img
+          alt="logo"
+          src="https://primefaces.org/cdn/primereact/images/logo.png"
+          height="40"
+          className="mr-2"
+        />
+      </Link>
       <Link to={AvailableRoutes.Home}>
         <Button
           label="Search"

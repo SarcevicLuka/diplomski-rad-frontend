@@ -6,17 +6,23 @@ import { useContext } from "react";
 
 export function useAxios() {
   const navigation = useNavigate();
-  const { saveToken } = useContext(AuthContext);
+  const { saveToken, token } = useContext(AuthContext);
 
   const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
   });
 
+  axiosInstance.interceptors.request.use((request) => {
+    if (token) {
+      request.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return request;
+  });
+
   axiosInstance.interceptors.response.use(
     (response) => {
-      const jwtToken = response.data.token;
-      if (jwtToken) {
-        if (saveToken) saveToken(jwtToken);
+      if (response.data.token) {
+        if (saveToken) saveToken(response.data);
         navigation(AvailableRoutes.Home);
       }
       return response;

@@ -1,5 +1,11 @@
+import DefaultLayout from "../layouts/Default";
+
 function Account() {
-  return <div>Account</div>;
+  return (
+    <DefaultLayout>
+      <div>Account</div>
+    </DefaultLayout>
+  );
 }
 
 export default Account;
