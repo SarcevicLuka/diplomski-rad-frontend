@@ -50,8 +50,7 @@ function AuthNavButtons() {
       label: "New Post",
       icon: "pi pi-plus",
       command: () => {
-        if (saveToken) saveToken();
-        navigation(AvailableRoutes.CreatePost);
+        if (saveToken) navigation(AvailableRoutes.CreatePost);
       },
     },
     {

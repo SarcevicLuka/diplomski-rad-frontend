@@ -30,7 +30,7 @@ const RouteConfiguration: RouteInformation[] = [
     visibility: RouteVisibility.Everyone,
   },
   {
-    path: AvailableRoutes.Account,
+    path: AvailableRoutes.Account(),
     component: Account,
     visibility: RouteVisibility.Everyone,
   },

@@ -25,3 +25,8 @@ export type User = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type UserInfo = {
+  userData: User;
+  amFollowing: boolean;
+};
