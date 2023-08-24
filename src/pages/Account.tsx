@@ -10,7 +10,7 @@ import PostList from "../components/Lists/PostList";
 import { Button } from "primereact/button";
 import { AuthContext } from "../provider/AuthProvider";
 import { useParams } from "react-router-dom";
-import FollowerList from "../components/Lists/FollowerList";
+import PeopleList from "../components/Lists/PeopleList";
 
 type AccountParams = {
   userId: string;
@@ -18,7 +18,7 @@ type AccountParams = {
 
 function Account() {
   const { axiosInstance } = useAxios();
-  const { token } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [userInfo, setUserInfo] = useState<UserInfo | undefined>();
   const [followed, setFollowed] = useState<boolean | undefined>(
     userInfo?.amFollowing
@@ -37,8 +37,19 @@ function Account() {
       });
   };
 
+  const handleUnfollowUser = () => {
+    axiosInstance
+      .post(authRoutes.UNFOLLOW_USER(userId!))
+      .then((response) => {
+        console.log(response);
+        setFollowed(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   useEffect(() => {
-    console.log(userId);
     axiosInstance
       .get(authRoutes.USER_ACCOUNT_INFO(userId!))
       .then((response) => {
@@ -71,7 +82,7 @@ function Account() {
                 </tr>
               </tbody>
             </table>
-            {token && (
+            {user?.id !== userInfo?.userData.id && (
               <Button
                 label={followed ? "Unfollow" : "Follow"}
                 size="small"
@@ -80,7 +91,10 @@ function Account() {
                   userInfo?.amFollowing ? "pi pi-user-minus" : "pi pi-user-plus"
                 }
                 outlined={!followed}
-                onClick={() => handleFollowUser()}
+                onClick={() => {
+                  if (followed) handleUnfollowUser();
+                  else handleFollowUser();
+                }}
               />
             )}
           </div>
@@ -94,7 +108,7 @@ function Account() {
             </TabPanel>
             <TabPanel header="People">
               {userInfo?.userData && (
-                <FollowerList userId={userInfo?.userData.id} />
+                <PeopleList userId={userInfo?.userData.id} />
               )}
             </TabPanel>
           </TabView>

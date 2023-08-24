@@ -23,12 +23,12 @@ function Home() {
         <Divider layout="vertical" />
         <div className="sm:col-12 md:col-9">
           <TabView>
-            {/* <TabPanel header="Newest" rightIcon="pi pi-stopwatch ml-2">
+            <TabPanel header="Newest" rightIcon="pi pi-stopwatch ml-2">
               <HomeScreenPostList searchTerm={"newest"} />
             </TabPanel>
             <TabPanel header="Best reviewed" rightIcon="pi pi-thumbs-up ml-2">
-              <div>Post</div>
-            </TabPanel> */}
+              <HomeScreenPostList searchTerm={"best-reviewed"} />
+            </TabPanel>
           </TabView>
         </div>
       </div>

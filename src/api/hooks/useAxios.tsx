@@ -13,7 +13,6 @@ export function useAxios() {
   });
 
   axiosInstance.interceptors.request.use((request) => {
-    console.log(token);
     if (token) {
       request.headers["Authorization"] = `Bearer ${token}`;
     }
@@ -22,7 +21,6 @@ export function useAxios() {
 
   axiosInstance.interceptors.response.use(
     (response) => {
-      console.log(response);
       if (response.data.token) {
         if (saveToken) saveToken(response.data);
         navigation(AvailableRoutes.Home);

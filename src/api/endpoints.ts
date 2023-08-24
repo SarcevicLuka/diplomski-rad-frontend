@@ -8,6 +8,7 @@ export const authRoutes = {
   FEED_POSTS: (searchTerm: string, page?: number) =>
     `/feed/${searchTerm}${page ? `?page=${page}` : ""}`,
   FOLLOW_USER: (userId: string) => `user/${userId}/follow`,
+  UNFOLLOW_USER: (userId: string) => `user/${userId}/unfollow`,
   USER_FOLLOWS: (userId: string, perPage?: number) =>
     `user/${userId}/follows${perPage ? `?perPage=${perPage}` : ""}`,
   USER_FOLLOWING: (userId: string, perPage?: number) =>

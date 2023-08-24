@@ -1,30 +1,32 @@
 import { useEffect, useRef, useState } from "react";
-import { PostResponse } from "./types";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { useAxios } from "../../api/hooks/useAxios";
 import { authRoutes } from "../../api/endpoints";
 import InfiniteScroll from "react-infinite-scroll-component";
-import PostItem from "./PostItem";
+import { User } from "../../pages/auth/types";
+import UserItem from "./UserItem";
 
-interface PostList {
-  userId?: string;
+interface PeopleListProps {
+  userId: string;
 }
 
-function PostList({ userId }: PostList) {
+function PeopleList({ userId }: PeopleListProps) {
   const { axiosInstance } = useAxios();
-  const [posts, setPosts] = useState<PostResponse[]>([]);
+  const [followers, setFollowers] = useState<User[]>([]);
+  const [following, setFollowing] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
-  const [total, setTotal] = useState<number>(0);
+  const [totalFollowers, setTotalFollowers] = useState<number>(0);
+  const [totalFollowing, setTotalFollowing] = useState<number>(0);
   const useEffectCalled = useRef(false);
 
   const handleFetchPosts = async (page?: number) => {
     axiosInstance
-      .get(authRoutes.USER_POSTS(userId, page))
+      .get(authRoutes.USER_FOLLOWS(userId, page))
       .then((response) => {
-        setTotal(response.data.total);
-        response.data.data.forEach((post: PostResponse) => {
-          setPosts((current) => [...current, post]);
+        setTotalFollowers(response.data.total);
+        response.data.data.forEach((user: User) => {
+          setFollowers((current) => [...current, user]);
         });
       })
       .catch((error) => {
@@ -53,23 +55,23 @@ function PostList({ userId }: PostList) {
         console.log(page);
         handleFetchPosts(page);
       }}
-      hasMore={Math.ceil(total / 15) === page}
+      hasMore={Math.ceil(totalFollowers / 15) === page}
       loader={<p></p>}
       endMessage={
         <p style={{ textAlign: "center" }}>
           <b>End</b>
         </p>
       }
-      dataLength={total}
+      dataLength={totalFollowers}
       scrollableTarget={"post-card-item"}
     >
       <div className="overflow-scroll scroll-container" id="post-card-item">
-        {posts?.map((data) => {
-          return <PostItem post={data} />;
+        {followers?.map((data) => {
+          return <UserItem user={data} />;
         })}
       </div>
     </InfiniteScroll>
   );
 }
 
-export default PostList;
+export default PeopleList;

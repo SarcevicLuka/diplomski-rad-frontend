@@ -33,7 +33,10 @@ function AuthNavButtons() {
     {
       label: "Account",
       icon: "pi pi-user",
-      command: () => navigation(AvailableRoutes.Account),
+      command: () => {
+        console.log("my account");
+        navigation(AvailableRoutes.Account(user?.id));
+      },
     },
     {
       label: "Log Out",
@@ -56,7 +59,7 @@ function AuthNavButtons() {
     {
       label: "Account",
       icon: "pi pi-user",
-      command: () => navigation(AvailableRoutes.Account),
+      command: () => navigation(AvailableRoutes.Account(user?.id)),
     },
     {
       label: "Log Out",
