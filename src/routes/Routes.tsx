@@ -32,7 +32,7 @@ const Routes = () => {
           return (
             <Route
               element={<route.component />}
-              key={route.path}
+              key={Math.random()}
               path={route.path}
             />
           );

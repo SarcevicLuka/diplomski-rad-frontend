@@ -20,7 +20,7 @@ function Home() {
         <div className="sm:col-12 md:col-3">
           <HomeScreenSidePanel isLoggedIn={isLoggedIn(token)} />
         </div>
-        <Divider layout="vertical" />
+        <Divider layout="vertical" className="hidden sm:hidden md:block" />
         <div className="sm:col-12 md:col-9">
           <TabView>
             <TabPanel header="Newest" rightIcon="pi pi-stopwatch ml-2">

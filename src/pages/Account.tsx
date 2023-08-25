@@ -18,7 +18,7 @@ type AccountParams = {
 
 function Account() {
   const { axiosInstance } = useAxios();
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const [userInfo, setUserInfo] = useState<UserInfo | undefined>();
   const [followed, setFollowed] = useState<boolean | undefined>(
     userInfo?.amFollowing
@@ -50,6 +50,7 @@ function Account() {
   };
 
   useEffect(() => {
+    console.log("Account" + userId);
     axiosInstance
       .get(authRoutes.USER_ACCOUNT_INFO(userId!))
       .then((response) => {
@@ -64,7 +65,7 @@ function Account() {
       })
       .finally();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userId]);
 
   return (
     <DefaultLayout>
@@ -82,7 +83,7 @@ function Account() {
                 </tr>
               </tbody>
             </table>
-            {user?.id !== userInfo?.userData.id && (
+            {token && user?.id !== userInfo?.userData.id && (
               <Button
                 label={followed ? "Unfollow" : "Follow"}
                 size="small"

@@ -5,6 +5,7 @@ import { authRoutes } from "../../api/endpoints";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { User } from "../../pages/auth/types";
 import UserItem from "./UserItem";
+import { Divider } from "primereact/divider";
 
 interface PeopleListProps {
   userId: string;
@@ -49,28 +50,57 @@ function PeopleList({ userId }: PeopleListProps) {
   return isLoading ? (
     <ProgressSpinner />
   ) : (
-    <InfiniteScroll
-      next={() => {
-        console.log("infinite scroll");
-        console.log(page);
-        handleFetchPosts(page);
-      }}
-      hasMore={Math.ceil(totalFollowers / 15) === page}
-      loader={<p></p>}
-      endMessage={
-        <p style={{ textAlign: "center" }}>
-          <b>End</b>
-        </p>
-      }
-      dataLength={totalFollowers}
-      scrollableTarget={"post-card-item"}
-    >
-      <div className="overflow-scroll scroll-container" id="post-card-item">
-        {followers?.map((data) => {
-          return <UserItem user={data} />;
-        })}
+    <div className="flex">
+      <div className="flex-1 flex align-item-center justify-content-center">
+        <InfiniteScroll
+          next={() => {
+            console.log("infinite scroll");
+            console.log(page);
+            handleFetchPosts(page);
+          }}
+          hasMore={Math.ceil(totalFollowers / 15) === page}
+          loader={<p></p>}
+          endMessage={
+            <p style={{ textAlign: "center" }}>
+              <b>End</b>
+            </p>
+          }
+          dataLength={totalFollowers}
+          scrollableTarget={"post-card-item"}
+        >
+          <div className="overflow-scroll scroll-container" id="post-card-item">
+            {followers?.map((data) => {
+              return <UserItem user={data} />;
+            })}
+          </div>
+        </InfiniteScroll>
       </div>
-    </InfiniteScroll>
+      <Divider layout="vertical" />
+      <div className="flex-1 flex align-item-center justify-content-center">
+        <InfiniteScroll
+          next={() => {
+            console.log("infinite scroll");
+            console.log(page);
+            handleFetchPosts(page);
+          }}
+          hasMore={Math.ceil(totalFollowers / 15) === page}
+          loader={<p></p>}
+          endMessage={
+            <p style={{ textAlign: "center" }}>
+              <b>End</b>
+            </p>
+          }
+          dataLength={totalFollowers}
+          scrollableTarget={"post-card-item"}
+        >
+          <div className="overflow-scroll scroll-container" id="post-card-item">
+            {following?.map((data) => {
+              return <UserItem user={data} />;
+            })}
+          </div>
+        </InfiniteScroll>
+      </div>
+    </div>
   );
 }
 

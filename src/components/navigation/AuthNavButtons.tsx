@@ -90,14 +90,16 @@ function AuthNavButtons() {
           />
         </>
       ) : (
-        <>
-          <Link to={AvailableRoutes.Login}>
-            <Button label="Login" link />
-          </Link>
-          <Link to={AvailableRoutes.Register}>
-            <Button label="Register" size="small" />
-          </Link>
-        </>
+        isMobile && (
+          <>
+            <Link to={AvailableRoutes.Login}>
+              <Button label="Login" link />
+            </Link>
+            <Link to={AvailableRoutes.Register}>
+              <Button label="Register" size="small" />
+            </Link>
+          </>
+        )
       )}
     </div>
   );
