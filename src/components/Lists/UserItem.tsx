@@ -12,17 +12,19 @@ interface UserItem {
 function UserItem({ user }: UserItem) {
   return (
     <>
-      <Link to={AvailableRoutes.Account(user.id)} reloadDocument>
-        <div className="flex align-items-center justify-content-between">
+      <div className="flex align-items-center justify-content-between">
+        <Link to={AvailableRoutes.Account(user.id)} reloadDocument>
           <div className="flex align-items-center">
-            <Avatar image={user.avatar} size="large" shape="circle" />
-            <div className="ml-3 text-xl">
-              <div>{`${user.firstName} ${user.lastName}`}</div>
+            <Avatar image={user.avatar} size="xlarge" shape="circle" />
+            <div className="flex flex-column ml-5">
+              <div className="text-2xl">
+                <div>{`${user.firstName} ${user.lastName}`}</div>
+              </div>
+              <div>Joined: {convertToLocaleDate(user.createdAt)}</div>
             </div>
-            <div>{convertToLocaleDate(user.createdAt)}</div>
           </div>
-        </div>
-      </Link>
+        </Link>
+      </div>
       <Divider />
     </>
   );

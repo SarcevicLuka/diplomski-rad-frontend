@@ -35,10 +35,16 @@ function PostItem({ post }: PostItemProps) {
               className={avatarStyle}
             />
           </Link>
-          <div>{convertToLocaleDate(post.post.createdAt)}</div>
+          <div className="flex flex-column">
+            <div className="text-lg font-medium">{`${post.creator.firstName} ${post.creator.lastName}`}</div>
+            <div>{convertToLocaleDate(post.post.createdAt)}</div>
+          </div>
         </div>
         <div>
-          <Tag value={`${post.watchData.brand}  ${post.watchData.model}`} />
+          <Tag
+            className="text-base"
+            value={`${post.watchData.brand}  ${post.watchData.model}`}
+          />
         </div>
       </div>
       <Link to={AvailableRoutes.Home} className="post-card">
@@ -61,7 +67,7 @@ function PostItem({ post }: PostItemProps) {
           value={post.post.score}
           cancel={false}
           readOnly
-          tooltip="Users score"
+          tooltip="Creator score"
           tooltipOptions={{ position: "bottom" }}
         />
       </div>
