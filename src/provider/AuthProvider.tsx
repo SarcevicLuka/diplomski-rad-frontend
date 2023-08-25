@@ -14,21 +14,31 @@ const AuthContext = createContext<AuthContextProps>({
   saveToken: undefined,
 });
 
+const getUserFromSessioStorage = (): User | undefined => {
+  const userString = sessionStorage.getItem("user");
+  if (userString) return JSON.parse(userString);
+  return undefined;
+};
+
 const AuthProvider: FunctionComponent<{ children: ReactNode }> = ({
   children,
 }) => {
   const [token, setToken] = useState<string | undefined | null>(
     sessionStorage.getItem("token")
   );
-  const [user, setUser] = useState<User | undefined | null>(undefined);
+  const [user, setUser] = useState<User | undefined | null>(
+    getUserFromSessioStorage()
+  );
 
   const saveToken = (authResponse?: UserAuthResponse): void => {
     if (authResponse?.token) {
       sessionStorage.setItem("token", authResponse.token);
+      sessionStorage.setItem("user", JSON.stringify(authResponse.user));
       setToken(authResponse.token);
       setUser(authResponse.user);
     } else {
       sessionStorage.removeItem("token");
+      sessionStorage.removeItem("user");
       setToken(undefined);
       setUser(undefined);
     }
