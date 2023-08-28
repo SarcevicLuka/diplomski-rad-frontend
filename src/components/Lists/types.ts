@@ -28,6 +28,7 @@ export type PostResponse = {
   post: Post;
   creator: User;
   watchData: Watch;
+  isLiked: boolean;
 };
 
 export type PostPagePost = {

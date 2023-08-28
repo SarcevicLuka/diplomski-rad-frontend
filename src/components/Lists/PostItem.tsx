@@ -16,7 +16,13 @@ interface PostItemProps {
 }
 
 function PostItem({ post }: PostItemProps) {
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
+
+  const likeIconStyle = classNames({
+    "pi pi-heart-fill": post.isLiked && token,
+    "pi pi-heart": !post.isLiked,
+    "mr-1": true,
+  });
 
   const avatarStyle = classNames({
     "border-indigo-400 border-2": user?.id === post.creator.id,
@@ -55,7 +61,7 @@ function PostItem({ post }: PostItemProps) {
       <div className="flex justify-content-between mt-2">
         <div className="flex">
           <div className="flex align-items-center mr-3">
-            <i className="pi pi-heart mr-1"></i>
+            <i className={likeIconStyle}></i>
             {post.post.numOfLikes}
           </div>
           <div className="flex align-items-center">
