@@ -29,3 +29,15 @@ export type PostResponse = {
   creator: User;
   watchData: Watch;
 };
+
+export type PostPagePost = {
+  id: string;
+  userId: string;
+  watchId: string;
+  text: string;
+  score: number;
+  avgCommentScore: number;
+  numOfLikes: number;
+  createdAt: string;
+  updatedAt: string;
+};

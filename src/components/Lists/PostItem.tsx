@@ -47,7 +47,7 @@ function PostItem({ post }: PostItemProps) {
           />
         </div>
       </div>
-      <Link to={AvailableRoutes.Home} className="post-card">
+      <Link to={AvailableRoutes.Post(post.post.id)} className="post-card">
         <div className="post-review mt-2">
           {parse(post.post.review.substring(0, 200))}
         </div>

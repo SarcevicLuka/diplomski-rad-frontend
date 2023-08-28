@@ -1,11 +1,12 @@
-import Home from "../pages/Home";
+import HomePage from "../pages/HomePage";
 import Login from "../pages/auth/Login";
 import NotFound from "../pages/NotFoundPage";
 import Register from "../pages/auth/Register";
 import { AvailableRoutes } from "./AvailableRoutes";
 import { RouteVisibility } from "./RouteVisibility";
-import Account from "../pages/Account";
-import CreatePost from "../pages/CreatePost";
+import AccountPage from "../pages/AccountPage";
+import CreatePostPage from "../pages/CreatePostPage";
+import PostPage from "../pages/PostPage";
 
 type RouteInformation = {
   path: string;
@@ -16,7 +17,7 @@ type RouteInformation = {
 const RouteConfiguration: RouteInformation[] = [
   {
     path: AvailableRoutes.Home,
-    component: Home,
+    component: HomePage,
     visibility: RouteVisibility.Everyone,
   },
   {
@@ -31,13 +32,18 @@ const RouteConfiguration: RouteInformation[] = [
   },
   {
     path: AvailableRoutes.Account(),
-    component: Account,
+    component: AccountPage,
     visibility: RouteVisibility.Everyone,
   },
   {
     path: AvailableRoutes.CreatePost,
-    component: CreatePost,
+    component: CreatePostPage,
     visibility: RouteVisibility.LoggedIn,
+  },
+  {
+    path: AvailableRoutes.Post(),
+    component: PostPage,
+    visibility: RouteVisibility.Everyone,
   },
   { path: "*", component: NotFound, visibility: RouteVisibility.Everyone },
 ];

@@ -175,7 +175,12 @@ function Register() {
                 <label htmlFor="input_value">Password</label>
               </span>
               {checkErrors(errors, touched, "password")}
-              <Button type="submit" label="Register" disabled={isSubmitting} />
+              <Button
+                type="submit"
+                label="Register"
+                disabled={isSubmitting}
+                loading={isSubmitting}
+              />
             </form>
           )}
         </Formik>

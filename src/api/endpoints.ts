@@ -10,7 +10,7 @@ export const authRoutes = {
   USER_POSTS: (userId: string | undefined, page?: number) =>
     `user/${userId}/posts${page ? `?page=${page}` : ""}`,
 
-  USER_POST: (postId: string) => `posts/${postId}`,
+  USER_POST: (postId?: string) => `posts/${postId}`,
 
   FEED_POSTS: (searchTerm: string, page?: number) =>
     `/feed/${searchTerm}${page ? `?page=${page}` : ""}`,
