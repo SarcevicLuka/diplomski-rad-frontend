@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useAxios } from "../../api/hooks/useAxios";
 import { Password } from "primereact/password";
 import { RegisterUserData } from "./types";
-import { authRoutes } from "../../api/endpoints";
+import { AuthRoutes } from "../../api/endpoints";
 
 const initialValues: RegisterUserData = {
   firstName: "",
@@ -51,7 +51,7 @@ function Register() {
     actions: FormikHelpers<RegisterUserData>
   ) => {
     axiosInstance
-      .post(authRoutes.REGISTER, values)
+      .post(AuthRoutes.REGISTER, values)
       .then((response) => {
         console.log(response.data);
       })

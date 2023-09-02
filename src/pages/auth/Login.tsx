@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { AvailableRoutes } from "../../routes/AvailableRoutes";
 import { useAxios } from "../../api/hooks/useAxios";
 import { LoginUserData } from "./types";
-import { authRoutes } from "../../api/endpoints";
+import { AuthRoutes } from "../../api/endpoints";
 
 const initialValues: LoginUserData = {
   email: "",
@@ -37,7 +37,7 @@ function Login() {
     actions: FormikHelpers<LoginUserData>
   ) => {
     axiosInstance
-      .post(authRoutes.LOGIN, values)
+      .post(AuthRoutes.LOGIN, values)
       .then((response) => {
         console.log(response);
       })

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { PostResponse } from "./types";
 import { useAxios } from "../../api/hooks/useAxios";
-import { authRoutes } from "../../api/endpoints";
+import { PostRoutes } from "../../api/endpoints";
 import { ProgressSpinner } from "primereact/progressspinner";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostItem from "./PostItem";
@@ -20,7 +20,7 @@ function HomeScreenPostList({ searchTerm }: HomeScreenPostListProps) {
 
   const handleFetchFeedPosts = async (page?: number) => {
     axiosInstance
-      .get(authRoutes.FEED_POSTS(searchTerm, page))
+      .get(PostRoutes.FEED_POSTS(searchTerm, page))
       .then((response) => {
         console.log(response);
         setTotal(response.data.total);

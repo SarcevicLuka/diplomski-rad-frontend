@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import DefaultLayout from "../layouts/Default";
 import { UserInfo } from "./auth/types";
 import { useAxios } from "../api/hooks/useAxios";
-import { authRoutes } from "../api/endpoints";
+import { UserRoutes } from "../api/endpoints";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 import { TabView, TabPanel } from "primereact/tabview";
@@ -27,7 +27,7 @@ function Account() {
 
   const handleFollowUser = () => {
     axiosInstance
-      .post(authRoutes.FOLLOW_USER(userId!))
+      .post(UserRoutes.FOLLOW_USER(userId!))
       .then((response) => {
         console.log(response);
         setFollowed(true);
@@ -39,7 +39,7 @@ function Account() {
 
   const handleUnfollowUser = () => {
     axiosInstance
-      .post(authRoutes.UNFOLLOW_USER(userId!))
+      .post(UserRoutes.UNFOLLOW_USER(userId!))
       .then((response) => {
         console.log(response);
         setFollowed(false);
@@ -52,7 +52,7 @@ function Account() {
   useEffect(() => {
     console.log("Account" + userId);
     axiosInstance
-      .get(authRoutes.USER_ACCOUNT_INFO(userId!))
+      .get(UserRoutes.USER_ACCOUNT_INFO(userId!))
       .then((response) => {
         const userInfo: UserInfo = response.data;
         const date = new Date(userInfo.userData.createdAt);

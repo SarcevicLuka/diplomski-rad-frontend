@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState, useRef } from "react";
 import { useAxios } from "../../api/hooks/useAxios";
-import { authRoutes } from "../../api/endpoints";
+import { UserRoutes } from "../../api/endpoints";
 import { AuthContext } from "../../provider/AuthProvider";
 import { User } from "../../pages/auth/types";
 import HomeScreenUserItem from "./HomeScreenUserItem";
@@ -15,7 +15,7 @@ function HomeScreenFriendsList() {
 
   const handleGetFollows = () => {
     axiosInstance
-      .get(authRoutes.USER_FOLLOWS(user!.id, 10))
+      .get(UserRoutes.USER_FOLLOWS(user!.id, 10))
       .then((response) => {
         console.log(response);
         response.data.data.forEach((user: User) => {
@@ -28,7 +28,7 @@ function HomeScreenFriendsList() {
   };
   const handleGetFollowing = () => {
     axiosInstance
-      .get(authRoutes.USER_FOLLOWING(user!.id, 10))
+      .get(UserRoutes.USER_FOLLOWING(user!.id, 10))
       .then((response) => {
         console.log(response);
         response.data.data.forEach((user: User) => {

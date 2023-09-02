@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { useAxios } from "../../api/hooks/useAxios";
-import { authRoutes } from "../../api/endpoints";
+import { UserRoutes } from "../../api/endpoints";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { User } from "../../pages/auth/types";
 import UserItem from "./UserItem";
@@ -18,12 +18,11 @@ function PeopleList({ userId }: PeopleListProps) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const [totalFollowers, setTotalFollowers] = useState<number>(0);
-  const [totalFollowing, setTotalFollowing] = useState<number>(0);
   const useEffectCalled = useRef(false);
 
   const handleFetchPosts = async (page?: number) => {
     axiosInstance
-      .get(authRoutes.USER_FOLLOWS(userId, page))
+      .get(UserRoutes.USER_FOLLOWS(userId, page))
       .then((response) => {
         setTotalFollowers(response.data.total);
         response.data.data.forEach((user: User) => {

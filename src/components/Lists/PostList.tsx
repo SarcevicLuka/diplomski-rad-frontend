@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { PostResponse } from "./types";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { useAxios } from "../../api/hooks/useAxios";
-import { authRoutes } from "../../api/endpoints";
+import { PostRoutes } from "../../api/endpoints";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostItem from "./PostItem";
 
@@ -20,7 +20,7 @@ function PostList({ userId }: PostList) {
 
   const handleFetchPosts = async (page?: number) => {
     axiosInstance
-      .get(authRoutes.USER_POSTS(userId, page))
+      .get(PostRoutes.USER_POSTS(userId, page))
       .then((response) => {
         setTotal(response.data.total);
         response.data.data.forEach((post: PostResponse) => {

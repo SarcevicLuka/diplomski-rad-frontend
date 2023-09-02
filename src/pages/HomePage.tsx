@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Divider } from "primereact/divider";
 import DefaultLayout from "../layouts/Default";
 import { AuthContext } from "../provider/AuthProvider";
@@ -9,10 +9,6 @@ import HomeScreenPostList from "../components/Lists/HomeScreenPostList";
 
 function Home() {
   const { token } = useContext(AuthContext);
-
-  useEffect(() => {
-    console.log("Rendered Home screen");
-  }, []);
 
   return (
     <DefaultLayout>
