@@ -18,9 +18,11 @@ interface PostItemProps {
 function PostItem({ post }: PostItemProps) {
   const { user, token } = useContext(AuthContext);
 
+  console.log(post);
+
   const likeIconStyle = classNames({
     "pi pi-heart-fill": post.isLiked && token,
-    "pi pi-heart": !post.isLiked,
+    "pi pi-heart": !post.isLiked || !token,
     "mr-1": true,
   });
 
