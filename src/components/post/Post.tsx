@@ -27,6 +27,7 @@ function Post({ postId }: PostProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [postData, setPostData] = useState<PostData>();
   const [liked, setLiked] = useState<boolean>(false);
+  const [likeCount, setLikeCount] = useState<number>(0);
 
   const handleGetPostData = () => {
     setLoading(true);
@@ -36,12 +37,37 @@ function Post({ postId }: PostProps) {
         console.log(response.data);
         setPostData(response.data);
         setLiked(response.data.post.isLikedByUser);
+        setLikeCount(response.data.post.numOfLikes);
       })
       .catch((error) => {
         console.error(error);
       })
       .finally(() => {
         setLoading(false);
+      });
+  };
+
+  const handleLikePost = () => {
+    axiosInstance
+      .post(PostRoutes.LIKE_POST(postData?.post.id))
+      .then(() => {
+        setLiked(!liked);
+        setLikeCount(likeCount! + 1);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleRemoveLikePost = () => {
+    axiosInstance
+      .post(PostRoutes.REMOVE_LIKE_POST(postData?.post.id))
+      .then(() => {
+        setLiked(!liked);
+        setLikeCount(likeCount! - 1);
+      })
+      .catch((error) => {
+        console.error(error);
       });
   };
 
@@ -83,17 +109,20 @@ function Post({ postId }: PostProps) {
               </div>
               <div className="flex flex-column align-items-center justify-content-center">
                 <Button
-                  label="4"
+                  label={likeCount.toString()}
                   icon={token && liked ? "pi pi-heart-fill" : "pi pi-heart"}
                   style={{ color: "var(--primary-color)" }}
                   rounded
                   text
                   raised
-                  disabled={token ? false : true}
+                  disabled={!token}
                   severity="help"
                   aria-label="Favorite"
                   tooltip="Like post"
                   tooltipOptions={{ position: "bottom" }}
+                  onClick={() =>
+                    !liked ? handleLikePost() : handleRemoveLikePost()
+                  }
                 />
                 <div className="mt-1">
                   User score: {postData.post.score}
