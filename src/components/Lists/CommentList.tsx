@@ -8,6 +8,7 @@ import CommentItem from "./CommentItem";
 
 interface CommentListnProps {
   postId?: string;
+  createdComment: number;
 }
 
 function CommentList({ postId }: CommentListnProps) {
@@ -38,6 +39,7 @@ function CommentList({ postId }: CommentListnProps) {
   };
 
   useEffect(() => {
+    console.log("Comment created refresh list");
     if (useEffectCalled.current) return;
     useEffectCalled.current = true;
     handleFetchPostComments();

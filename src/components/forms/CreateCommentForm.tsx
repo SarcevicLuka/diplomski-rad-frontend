@@ -9,10 +9,12 @@ import { PostRoutes } from "../../api/endpoints";
 import { CreateCommentFromData } from "./types";
 import { Rating } from "primereact/rating";
 import { Toast } from "primereact/toast";
-import { useRef } from "react";
+import { Dispatch, SetStateAction, useContext, useRef } from "react";
+import { AuthContext } from "../../provider/AuthProvider";
 
 interface CreateCommentFormProps {
   postId?: string;
+  setCreatedComment: Dispatch<SetStateAction<number>>;
 }
 
 const initialValues: CreateCommentFromData = {
@@ -25,7 +27,11 @@ const CreateCommentSchema = Yup.object().shape({
   score: Yup.number().min(1).max(5).required("Required"),
 });
 
-function CreateCommentForm({ postId }: CreateCommentFormProps) {
+function CreateCommentForm({
+  postId,
+  setCreatedComment,
+}: CreateCommentFormProps) {
+  const { token } = useContext(AuthContext);
   const { axiosInstance } = useAxios();
   const toast = useRef<Toast>(null);
 
@@ -47,6 +53,7 @@ function CreateCommentForm({ postId }: CreateCommentFormProps) {
       .then((response) => {
         console.log(response);
         showToast();
+        setCreatedComment((prevActiveStep) => prevActiveStep + 1);
       })
       .catch((error) => {
         console.log(error);
@@ -85,6 +92,7 @@ function CreateCommentForm({ postId }: CreateCommentFormProps) {
                   cols={30}
                   value={values.text}
                   onChange={handleChange}
+                  disabled={!token}
                   className={classNames({
                     "p-invalid": errors.text && touched.text,
                     "w-full": true,
@@ -98,6 +106,7 @@ function CreateCommentForm({ postId }: CreateCommentFormProps) {
               <div>
                 <div>Your score:</div>
                 <Rating
+                  readOnly={!token}
                   id="score"
                   name="score"
                   value={values.score}
@@ -107,10 +116,10 @@ function CreateCommentForm({ postId }: CreateCommentFormProps) {
               </div>
               <Button
                 type="submit"
-                label="Create"
+                label={token ? "Create" : "Log in to comment"}
                 size="small"
                 icon="pi pi-plus"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !token}
               />
             </div>
           </form>

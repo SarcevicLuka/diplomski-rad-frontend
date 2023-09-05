@@ -25,6 +25,11 @@ export const PostRoutes = {
 
   CREATE_COMMENT: (postId?: string) => `posts/${postId}/comments/create`,
 
+  LIKE_COMMENT: (commentId?: string) => `comments/${commentId}/like`,
+
+  REMOVE_LIKE_COMMENT: (commentId?: string) =>
+    `comments/${commentId}/remove-like`,
+
   USER_POSTS: (userId: string | undefined, page?: number) =>
     `user/${userId}/posts${page ? `?page=${page}` : ""}`,
 
