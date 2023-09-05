@@ -5,7 +5,7 @@ import { AuthContext } from "../provider/AuthProvider";
 import { isLoggedIn } from "../provider/authUtils";
 import HomeScreenSidePanel from "../components/HomeScreenSidePanel";
 import { TabPanel, TabView } from "primereact/tabview";
-import HomeScreenPostList from "../components/Lists/HomeScreenPostList";
+import HomeScreenPostList from "../components/lists/HomeScreenPostList";
 
 function Home() {
   const { token } = useContext(AuthContext);

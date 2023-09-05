@@ -18,8 +18,6 @@ interface PostItemProps {
 function PostItem({ post }: PostItemProps) {
   const { user, token } = useContext(AuthContext);
 
-  console.log(post);
-
   const likeIconStyle = classNames({
     "pi pi-heart-fill": post.isLiked && token,
     "pi pi-heart": !post.isLiked || !token,
@@ -33,7 +31,10 @@ function PostItem({ post }: PostItemProps) {
 
   return (
     <>
-      <div className="header flex align-items-center justify-content-between">
+      <div
+        key={post.post.id}
+        className="header flex align-items-center justify-content-between"
+      >
         <div className="flex align-items-center">
           <Link to={AvailableRoutes.Account(post.creator.id)}>
             <Avatar

@@ -17,13 +17,13 @@ function ImageGalleria({ images }: GalleriaProps) {
   };
 
   return (
-    <div className="mt-4 text-lg font-medium flex flex-column justify-content-center">
-      <div className="mb-1">Image galleria: </div>
+    <div className="mt-4 text-xlisLikedByUser font-medium flex flex-column justify-content-center">
+      <div className="mb-1 text-xl">Image galleria: </div>
       <Galleria
         value={images}
         numVisible={5}
         circular
-        style={{ maxWidth: "1000px" }}
+        style={{ maxWidth: "500px" }}
         showItemNavigators
         showIndicators
         showThumbnails={false}

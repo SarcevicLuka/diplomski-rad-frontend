@@ -21,7 +21,7 @@ import classNames from "classnames";
 import { checkErrors } from "../../utils/formik";
 import { Button } from "primereact/button";
 import { useAxios } from "../../api/hooks/useAxios";
-import { authRoutes } from "../../api/endpoints";
+import { PostRoutes } from "../../api/endpoints";
 import { useNavigate } from "react-router-dom";
 import { AvailableRoutes } from "../../routes/AvailableRoutes";
 import FormContentDivider from "../FormContentDivider";
@@ -60,7 +60,7 @@ function ArticleForm() {
     actions: FormikHelpers<CreatePostFromData>
   ) => {
     axiosInstance
-      .post(authRoutes.CREATE_POST, values)
+      .post(PostRoutes.CREATE_POST, values)
       .then((response) => {
         console.log(response);
         navigation(AvailableRoutes.Home);

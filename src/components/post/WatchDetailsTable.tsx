@@ -1,4 +1,4 @@
-import { Watch } from "../Lists/types";
+import { Watch } from "../lists/types";
 
 interface WatchDetailsTableProps {
   watchDetails: Watch;
@@ -7,7 +7,7 @@ interface WatchDetailsTableProps {
 function WatchDetailsTable({ watchDetails }: WatchDetailsTableProps) {
   return (
     <>
-      <div className="text-lg font-medium mt-4">Watch Info:</div>
+      <div className="text-xl font-medium mt-4">Watch Info:</div>
       <table className="mt-1 w-12 sm:w-12 md:w-5">
         <tbody>
           <tr>

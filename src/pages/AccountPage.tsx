@@ -6,11 +6,11 @@ import { UserRoutes } from "../api/endpoints";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 import { TabView, TabPanel } from "primereact/tabview";
-import PostList from "../components/Lists/PostList";
+import PostList from "../components/lists/PostList";
 import { Button } from "primereact/button";
 import { AuthContext } from "../provider/AuthProvider";
 import { useParams } from "react-router-dom";
-import PeopleList from "../components/Lists/PeopleList";
+import PeopleList from "../components/lists/PeopleList";
 
 type AccountParams = {
   userId: string;

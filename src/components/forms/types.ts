@@ -19,6 +19,11 @@ export type CreatePostFromData = {
   images: Array<string>;
 };
 
+export type CreateCommentFromData = {
+  text: string;
+  score: number;
+};
+
 export type CreatePostData = {
   watchData: WatchUserData;
   images: ImageData[];

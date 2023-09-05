@@ -7,7 +7,9 @@ export const convertToLocaleDate = (dateTime: string): string => {
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
 
-  if (hours < 1) {
+  if (minutes < 1) {
+    return "Now";
+  } else if (hours < 1) {
     return minutes.toString() + " min";
   } else if (hours > 1 && hours < 24) {
     return hours.toString() + " hours";

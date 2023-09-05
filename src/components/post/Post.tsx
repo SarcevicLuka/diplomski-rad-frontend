@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useAxios } from "../../api/hooks/useAxios";
-import { authRoutes } from "../../api/endpoints";
+import { PostRoutes } from "../../api/endpoints";
 import { PostData } from "./types";
 import CustomCard from "../CustomCard";
 import { Link } from "react-router-dom";
@@ -13,6 +13,8 @@ import parse from "html-react-parser";
 import WatchDetailsTable from "./WatchDetailsTable";
 import { Button } from "primereact/button";
 import { AuthContext } from "../../provider/AuthProvider";
+import CommentSection from "../CommentSection";
+import { Divider } from "primereact/divider";
 
 interface PostProps {
   postId?: string;
@@ -24,14 +26,16 @@ function Post({ postId }: PostProps) {
   const useEffectCalled = useRef(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [postData, setPostData] = useState<PostData>();
+  const [liked, setLiked] = useState<boolean>(false);
 
   const handleGetPostData = () => {
     setLoading(true);
     axiosInstance
-      .get(authRoutes.USER_POST(postId))
+      .get(PostRoutes.USER_POST(postId))
       .then((response) => {
         console.log(response.data);
         setPostData(response.data);
+        setLiked(response.data.post.isLikedByUser);
       })
       .catch((error) => {
         console.error(error);
@@ -68,7 +72,7 @@ function Post({ postId }: PostProps) {
                   />
                 </Link>
                 <div className="flex flex-column ml-2">
-                  <div>
+                  <div className="font-medium">
                     Author:{" "}
                     {`${postData.creator.firstName} ${postData.creator.lastName}`}
                   </div>
@@ -77,10 +81,11 @@ function Post({ postId }: PostProps) {
                   </div>
                 </div>
               </div>
-              <div>
+              <div className="flex flex-column align-items-center justify-content-center">
                 <Button
                   label="4"
-                  icon="pi pi-heart"
+                  icon={token && liked ? "pi pi-heart-fill" : "pi pi-heart"}
+                  style={{ color: "var(--primary-color)" }}
                   rounded
                   text
                   raised
@@ -90,15 +95,44 @@ function Post({ postId }: PostProps) {
                   tooltip="Like post"
                   tooltipOptions={{ position: "bottom" }}
                 />
+                <div className="mt-1">
+                  User score: {postData.post.score}
+                  <i
+                    className="pi pi-star-fill"
+                    style={{ color: "var(--primary-color)" }}
+                  ></i>
+                </div>
+                <div className="mt-1">
+                  {postData.post.avgCommentScore !== 0 ? (
+                    <div>
+                      {`Avg. reader score: ${postData.post.avgCommentScore}`}
+                      <i
+                        className="pi pi-star-fill"
+                        style={{ color: "var(--primary-color)" }}
+                      ></i>
+                    </div>
+                  ) : (
+                    "No comment score"
+                  )}
+                </div>
               </div>
             </div>
           </div>
+          <Divider />
           <div className="review mt-4">
-            <div className="text-lg font-medium">Review:</div>
+            <div className="text-xl font-medium">Review:</div>
             <div className="text-lg">{parse(postData.post.text)}</div>
           </div>
           <WatchDetailsTable watchDetails={postData.watchData} />
           <ImageGalleria images={postData.watchImages} />
+          <Divider
+            className="text-xl"
+            pt={{ content: { className: "text-primary" } }}
+            align="center"
+          >
+            <b>Comments:</b>
+          </Divider>
+          <CommentSection postId={postId} />
         </div>
       </CustomCard>
     )

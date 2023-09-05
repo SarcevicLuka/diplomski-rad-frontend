@@ -1,5 +1,5 @@
 import { Button } from "primereact/button";
-import HomeScreenFriendsList from "./Lists/HomeScreenFriendsList";
+import HomeScreenFriendsList from "./lists/HomeScreenFriendsList";
 import { useNavigate } from "react-router-dom";
 import { AvailableRoutes } from "../routes/AvailableRoutes";
 

@@ -12,6 +12,17 @@ export type Post = {
   updatedAt: string;
 };
 
+export type Comment = {
+  id: string;
+  userId: string;
+  postId: string;
+  text: string;
+  score: number;
+  numOfLikes: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type Watch = {
   id: string;
   brand: string;
@@ -39,6 +50,13 @@ export type PostPagePost = {
   score: number;
   avgCommentScore: number;
   numOfLikes: number;
+  isLikedByUser: boolean;
   createdAt: string;
   updatedAt: string;
+};
+
+export type CommentResponse = {
+  comment: Comment;
+  creator: User;
+  isLiked: boolean;
 };

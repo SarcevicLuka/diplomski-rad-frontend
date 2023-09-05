@@ -23,6 +23,8 @@ export const UserRoutes = {
 export const PostRoutes = {
   CREATE_POST: "posts/create",
 
+  CREATE_COMMENT: (postId?: string) => `posts/${postId}/comments/create`,
+
   USER_POSTS: (userId: string | undefined, page?: number) =>
     `user/${userId}/posts${page ? `?page=${page}` : ""}`,
 
@@ -30,4 +32,7 @@ export const PostRoutes = {
 
   FEED_POSTS: (searchTerm: string, page?: number) =>
     `/feed/${searchTerm}${page ? `?page=${page}` : ""}`,
+
+  POST_COMMENTS: (postId: string, page?: number) =>
+    `/posts/${postId}/comments${page ? `?page=${page}` : ""}`,
 };
