@@ -29,6 +29,8 @@ export const PostRoutes = {
 
   LIKE_COMMENT: (commentId?: string) => `comments/${commentId}/like`,
 
+  EDIT_COMMENT: (commentId?: string) => `comments/${commentId}/edit`,
+
   REMOVE_LIKE_COMMENT: (commentId?: string) =>
     `comments/${commentId}/remove-like`,
 

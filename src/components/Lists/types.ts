@@ -60,3 +60,8 @@ export type CommentResponse = {
   creator: User;
   isLiked: boolean;
 };
+
+export type EditCommentUserData = {
+  text: string;
+  score: number;
+};

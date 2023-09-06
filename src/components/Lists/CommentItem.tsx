@@ -1,19 +1,17 @@
 import { Dispatch, SetStateAction, useContext, useState } from "react";
 import { convertToLocaleDate } from "../../utils/dateTimeConverter";
-import { CommentResponse } from "./types";
+import { CommentResponse, EditCommentUserData } from "./types";
 import { AuthContext } from "../../provider/AuthProvider";
 import classNames from "classnames";
 import { AvailableRoutes } from "../../routes/AvailableRoutes";
 import { Link } from "react-router-dom";
 import { Avatar } from "primereact/avatar";
-import { Rating } from "primereact/rating";
+import { Rating, RatingChangeEvent } from "primereact/rating";
 import { Divider } from "primereact/divider";
 import { useAxios } from "../../api/hooks/useAxios";
 import { PostRoutes } from "../../api/endpoints";
-import { SplitButton } from "primereact/splitbutton";
-import { MenuItem } from "primereact/menuitem";
-import SettingsIcon from "@mui/icons-material/Settings";
 import { ConfirmDialog } from "primereact/confirmdialog";
+import { InputTextarea } from "primereact/inputtextarea";
 
 interface CommentItemProps {
   commentData: CommentResponse;
@@ -28,6 +26,13 @@ function CommentItem({ commentData, setComments }: CommentItemProps) {
     commentData.comment.numOfLikes
   );
   const [visible, setVisible] = useState(false);
+  const [editing, setEditing] = useState<boolean>(false);
+  const [editedCommentScore, setEditedCommentScore] = useState<number>(
+    commentData.comment.score
+  );
+  const [editedCommentText, setEditedCommentText] = useState<string>(
+    commentData.comment.text
+  );
 
   const accept = () => {
     handleDeleteComment();
@@ -64,20 +69,6 @@ function CommentItem({ commentData, setComments }: CommentItemProps) {
     "mr-3": true,
   });
 
-  const items: MenuItem[] = [
-    {
-      label: "Edit",
-      icon: "pi pi-file-edit",
-    },
-    {
-      label: "Delete",
-      icon: "pi pi-times",
-      command: () => {
-        setVisible(true);
-      },
-    },
-  ];
-
   const handleLikeComment = () => {
     axiosInstance
       .post(PostRoutes.LIKE_COMMENT(commentData.comment.id))
@@ -96,6 +87,23 @@ function CommentItem({ commentData, setComments }: CommentItemProps) {
       .then(() => {
         setIsLiked(!isLiked);
         setLikeCount(likeCount - 1);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleEditComment = () => {
+    const values: EditCommentUserData = {
+      text: editedCommentText,
+      score: editedCommentScore,
+    };
+
+    axiosInstance
+      .patch(PostRoutes.EDIT_COMMENT(commentData.comment.id), values)
+      .then((response) => {
+        console.log(response);
+        setEditing(false);
       })
       .catch((error) => {
         console.error(error);
@@ -129,9 +137,50 @@ function CommentItem({ commentData, setComments }: CommentItemProps) {
           accept={accept}
           reject={reject}
         />
-        <SplitButton icon={<SettingsIcon />} size="small" text model={items} />
+        {token && commentData.creator.id === user?.id && editing ? (
+          <div>
+            <i
+              className="pi pi-check-square mr-2 cursor-pointer"
+              style={{ fontSize: "1.2rem", color: "green" }}
+              onClick={() => {
+                console.log(editedCommentScore);
+                console.log(editedCommentText);
+                handleEditComment();
+              }}
+            />
+            <i
+              className="pi pi-times mr-1 cursor-pointer"
+              style={{ fontSize: "1.2rem", color: "red" }}
+              onClick={() => setEditing(false)}
+            />
+          </div>
+        ) : (
+          <div>
+            <i
+              className="pi pi-file-edit mr-2 cursor-pointer"
+              style={{ fontSize: "1.2rem" }}
+              onClick={() => setEditing(true)}
+            />
+            <i
+              className="pi pi-trash mr-1 cursor-pointer"
+              style={{ fontSize: "1.2rem", color: "red" }}
+              onClick={() => setVisible(true)}
+            />
+          </div>
+        )}
       </div>
-      <div className="post-review mt-2">{commentData.comment.text}</div>
+      {editing ? (
+        <InputTextarea
+          value={editedCommentText}
+          onChange={(e) => {
+            setEditedCommentText(e.target.value);
+          }}
+          rows={2}
+          className="w-full"
+        />
+      ) : (
+        <div className="post-review mt-2">{editedCommentText}</div>
+      )}
       <div className="flex justify-content-between mt-2">
         <div className="flex">
           <div className="flex align-items-center mr-3">
@@ -147,11 +196,12 @@ function CommentItem({ commentData, setComments }: CommentItemProps) {
           </div>
         </div>
         <Rating
-          value={commentData.comment.score}
+          value={editedCommentScore}
           cancel={false}
-          readOnly
+          readOnly={!editing}
           tooltip="Commentor score"
           tooltipOptions={{ position: "bottom" }}
+          onChange={(e: RatingChangeEvent) => setEditedCommentScore(e.value!)}
         />
       </div>
       <Divider />
