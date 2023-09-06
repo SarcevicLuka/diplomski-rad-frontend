@@ -52,7 +52,7 @@ function HomeScreenFriendsList() {
   return (
     <div className="hidden md:block">
       <div className="text-xl mb-3">Following: </div>
-      <div className="flex flex-column h-15rem overflow-scroll">
+      <div className="side-panel flex flex-column h-15rem overflow-scroll">
         {follows.length === 0 && <div> You are not following anyone</div>}
         {follows.map((user: User) => {
           return <HomeScreenUserItem user={user} />;
@@ -65,7 +65,7 @@ function HomeScreenFriendsList() {
         />
       </div>
       <div className="text-xl mb-3">Followers: </div>
-      <div className="flex flex-column h-15rem overflow-scroll">
+      <div className="side-panel flex flex-column h-15rem overflow-scroll">
         {following.length === 0 && <div> You have no followers</div>}
         {following.map((user: User) => {
           return <HomeScreenUserItem user={user} />;

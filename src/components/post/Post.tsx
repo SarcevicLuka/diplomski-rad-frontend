@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useAxios } from "../../api/hooks/useAxios";
 import { PostRoutes } from "../../api/endpoints";
 import { PostData } from "./types";
@@ -29,12 +29,11 @@ function Post({ postId }: PostProps) {
   const [liked, setLiked] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(0);
 
-  const handleGetPostData = () => {
+  const handleGetPostData = useCallback(() => {
     setLoading(true);
     axiosInstance
       .get(PostRoutes.USER_POST(postId))
       .then((response) => {
-        console.log(response.data);
         setPostData(response.data);
         setLiked(response.data.post.isLikedByUser);
         setLikeCount(response.data.post.numOfLikes);
@@ -45,7 +44,7 @@ function Post({ postId }: PostProps) {
       .finally(() => {
         setLoading(false);
       });
-  };
+  }, []);
 
   const handleLikePost = () => {
     axiosInstance
@@ -72,12 +71,11 @@ function Post({ postId }: PostProps) {
   };
 
   useEffect(() => {
-    if (useEffectCalled.current) return;
-    useEffectCalled.current = true;
+    //if (useEffectCalled.current) return;
+    //useEffectCalled.current = true;
 
     handleGetPostData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleGetPostData]);
 
   return loading ? (
     <ProgressSpinner />
@@ -103,7 +101,7 @@ function Post({ postId }: PostProps) {
                     {`${postData.creator.firstName} ${postData.creator.lastName}`}
                   </div>
                   <div>
-                    Posted: {convertToLocaleDate(postData.post.updatedAt)}
+                    Posted: {convertToLocaleDate(postData.post.createdAt)}
                   </div>
                 </div>
               </div>

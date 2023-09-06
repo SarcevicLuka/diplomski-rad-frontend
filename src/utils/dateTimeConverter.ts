@@ -11,8 +11,8 @@ export const convertToLocaleDate = (dateTime: string): string => {
     return "Now";
   } else if (hours < 1) {
     return minutes.toString() + " min";
-  } else if (hours > 1 && hours < 24) {
-    return hours.toString() + " hours";
+  } else if (hours >= 1 && hours < 24) {
+    return hours.toString() + ` ${hours === 1 ? "hour ago" : "hours ago"}`;
   }
 
   return postDate.toLocaleDateString();
