@@ -1,9 +1,9 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useAxios } from "../../api/hooks/useAxios";
 import { PostRoutes } from "../../api/endpoints";
 import { PostData } from "./types";
 import CustomCard from "../CustomCard";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AvailableRoutes } from "../../routes/AvailableRoutes";
 import { Avatar } from "primereact/avatar";
 import { convertToLocaleDate } from "../../utils/dateTimeConverter";
@@ -23,11 +23,11 @@ interface PostProps {
 function Post({ postId }: PostProps) {
   const { axiosInstance } = useAxios();
   const { token } = useContext(AuthContext);
-  const useEffectCalled = useRef(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [postData, setPostData] = useState<PostData>();
   const [liked, setLiked] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(0);
+  const navigation = useNavigate();
 
   const handleGetPostData = useCallback(() => {
     setLoading(true);
@@ -44,6 +44,7 @@ function Post({ postId }: PostProps) {
       .finally(() => {
         setLoading(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLikePost = () => {
@@ -104,6 +105,19 @@ function Post({ postId }: PostProps) {
                     Posted: {convertToLocaleDate(postData.post.createdAt)}
                   </div>
                 </div>
+                {token && (
+                  <Button
+                    label="Edit post"
+                    icon="pi pi-file-edit"
+                    size="small"
+                    className="ml-2"
+                    rounded
+                    outlined
+                    onClick={() =>
+                      navigation(AvailableRoutes.EditPost(postData.post.id))
+                    }
+                  />
+                )}
               </div>
               <div className="flex flex-column align-items-center justify-content-center">
                 <Button

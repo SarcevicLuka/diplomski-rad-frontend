@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAxios } from "../../api/hooks/useAxios";
 import { PostRoutes } from "../../api/endpoints";
 import { ProgressSpinner } from "primereact/progressspinner";
@@ -18,14 +18,14 @@ function CommentList({ postId, createdComment }: CommentListnProps) {
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
 
-  const handleFetchPostComments = useCallback((page?: number) => {
+  const handleFetchPostComments = (pageNum?: number) => {
+    if (pageNum) setComments([]);
     axiosInstance
-      .get(PostRoutes.POST_COMMENTS(postId!, page))
+      .get(PostRoutes.POST_COMMENTS(postId!, pageNum ? pageNum : page))
       .then((response) => {
         setTotal(response.data.total);
-        setComments([]);
-        response.data.data.forEach((post: CommentResponse) => {
-          setComments((current) => [...current, post]);
+        response.data.data.forEach((comment: CommentResponse) => {
+          setComments((current) => [...current, comment]);
         });
       })
       .catch((error) => {
@@ -36,22 +36,23 @@ function CommentList({ postId, createdComment }: CommentListnProps) {
         setPage((prev) => prev + 1);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   useEffect(() => {
-    console.log(createdComment);
+    setTimeout(() => {
+      handleFetchPostComments(1);
+    }, 2000);
     //if (useEffectCalled.current) return;
     //useEffectCalled.current = true;
-    handleFetchPostComments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [handleFetchPostComments, createdComment]);
+  }, [createdComment]);
 
   return isLoading ? (
     <ProgressSpinner />
   ) : (
     <InfiniteScroll
       next={() => {
-        handleFetchPostComments(page);
+        handleFetchPostComments();
       }}
       hasMore={Math.ceil(total / 15) === page}
       loader={<p></p>}

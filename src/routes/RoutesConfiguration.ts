@@ -7,6 +7,7 @@ import { RouteVisibility } from "./RouteVisibility";
 import AccountPage from "../pages/AccountPage";
 import CreatePostPage from "../pages/CreatePostPage";
 import PostPage from "../pages/PostPage";
+import EditPostPage from "../pages/EditPostPage";
 
 type RouteInformation = {
   path: string;
@@ -38,6 +39,11 @@ const RouteConfiguration: RouteInformation[] = [
   {
     path: AvailableRoutes.CreatePost,
     component: CreatePostPage,
+    visibility: RouteVisibility.LoggedIn,
+  },
+  {
+    path: AvailableRoutes.EditPost(),
+    component: EditPostPage,
     visibility: RouteVisibility.LoggedIn,
   },
   {

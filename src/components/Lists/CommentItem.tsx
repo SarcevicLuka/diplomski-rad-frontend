@@ -48,6 +48,8 @@ function CommentItem({ commentData, setComments }: CommentItemProps) {
       .then(() => {
         setComments((current) =>
           current.filter((comment) => {
+            console.log("Comment being erased: " + commentData.comment.id);
+            console.log("Comment being checked: " + comment.comment.id);
             return comment.comment.id !== commentData.comment.id;
           })
         );
@@ -101,8 +103,7 @@ function CommentItem({ commentData, setComments }: CommentItemProps) {
 
     axiosInstance
       .patch(PostRoutes.EDIT_COMMENT(commentData.comment.id), values)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         setEditing(false);
       })
       .catch((error) => {
@@ -130,21 +131,19 @@ function CommentItem({ commentData, setComments }: CommentItemProps) {
         <ConfirmDialog
           visible={visible}
           onHide={() => setVisible(false)}
-          message="Are you sure you want to delete your comment?"
+          message={`Are you sure you want to delete your comment ${commentData.comment.id}`}
           header="Confirmation"
           icon="pi pi-exclamation-triangle"
           acceptClassName="p-button-danger"
           accept={accept}
           reject={reject}
         />
-        {token && commentData.creator.id === user?.id && editing ? (
+        {editing ? (
           <div>
             <i
               className="pi pi-check-square mr-2 cursor-pointer"
               style={{ fontSize: "1.2rem", color: "green" }}
               onClick={() => {
-                console.log(editedCommentScore);
-                console.log(editedCommentText);
                 handleEditComment();
               }}
             />
@@ -156,16 +155,20 @@ function CommentItem({ commentData, setComments }: CommentItemProps) {
           </div>
         ) : (
           <div>
-            <i
-              className="pi pi-file-edit mr-2 cursor-pointer"
-              style={{ fontSize: "1.2rem" }}
-              onClick={() => setEditing(true)}
-            />
-            <i
-              className="pi pi-trash mr-1 cursor-pointer"
-              style={{ fontSize: "1.2rem", color: "red" }}
-              onClick={() => setVisible(true)}
-            />
+            {commentData.creator.id === user?.id && (
+              <>
+                <i
+                  className="pi pi-file-edit mr-2 cursor-pointer"
+                  style={{ fontSize: "1.2rem" }}
+                  onClick={() => setEditing(true)}
+                />
+                <i
+                  className="pi pi-trash mr-1 cursor-pointer"
+                  style={{ fontSize: "1.2rem", color: "red" }}
+                  onClick={() => setVisible(true)}
+                />
+              </>
+            )}
           </div>
         )}
       </div>
@@ -179,7 +182,7 @@ function CommentItem({ commentData, setComments }: CommentItemProps) {
           className="w-full"
         />
       ) : (
-        <div className="post-review mt-2">{editedCommentText}</div>
+        <div className="post-review mt-2">{commentData.comment.text}</div>
       )}
       <div className="flex justify-content-between mt-2">
         <div className="flex">
