@@ -1,10 +1,4 @@
-import {
-  createContext,
-  FunctionComponent,
-  ReactNode,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, FunctionComponent, ReactNode, useState } from "react";
 import { Token, AuthUser } from "./authUtils";
 import { User, UserAuthResponse } from "../pages/auth/types";
 
@@ -49,10 +43,6 @@ const AuthProvider: FunctionComponent<{ children: ReactNode }> = ({
       setUser(undefined);
     }
   };
-
-  useEffect(() => {
-    console.log("Auth provider");
-  }, []);
 
   return (
     <AuthContext.Provider

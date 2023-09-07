@@ -50,8 +50,7 @@ function CreateCommentForm({
   ) => {
     axiosInstance
       .post(PostRoutes.CREATE_COMMENT(postId), values)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         showToast();
         setCreatedComment((prevActiveStep) => prevActiveStep + 1);
       })

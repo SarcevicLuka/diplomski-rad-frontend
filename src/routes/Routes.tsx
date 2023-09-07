@@ -1,6 +1,6 @@
 import { Route, Routes as DomRoutes } from "react-router-dom";
 import RouteConfiguration from "./RoutesConfiguration";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import { Token, isLoggedIn } from "../provider/authUtils";
 import { RouteVisibility } from "./RouteVisibility";
@@ -24,10 +24,6 @@ const Routes = () => {
 
     return routeVisibile;
   };
-
-  useEffect(() => {
-    console.log("Route");
-  }, []);
 
   return (
     <DomRoutes>

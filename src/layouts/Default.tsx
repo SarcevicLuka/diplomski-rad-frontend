@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import NavBar from "../components/navigation/NavBar";
 
 type props = {
@@ -6,10 +5,6 @@ type props = {
 };
 
 function DefaultLayout({ children }: props) {
-  useEffect(() => {
-    console.log("Default layout");
-  }, []);
-
   return (
     <>
       <NavBar />
