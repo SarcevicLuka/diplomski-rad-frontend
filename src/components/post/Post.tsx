@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAxios } from "../../api/hooks/useAxios";
 import { PostRoutes } from "../../api/endpoints";
 import { PostData } from "./types";
@@ -22,14 +22,14 @@ interface PostProps {
 
 function Post({ postId }: PostProps) {
   const { axiosInstance } = useAxios();
-  const { token } = useContext(AuthContext);
+  const { token, user } = useContext(AuthContext);
   const [loading, setLoading] = useState<boolean>(false);
   const [postData, setPostData] = useState<PostData>();
   const [liked, setLiked] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(0);
   const navigation = useNavigate();
 
-  const handleGetPostData = useCallback(() => {
+  const handleGetPostData = () => {
     setLoading(true);
     axiosInstance
       .get(PostRoutes.USER_POST(postId))
@@ -44,8 +44,7 @@ function Post({ postId }: PostProps) {
       .finally(() => {
         setLoading(false);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   const handleLikePost = () => {
     axiosInstance
@@ -76,7 +75,8 @@ function Post({ postId }: PostProps) {
     //useEffectCalled.current = true;
 
     handleGetPostData();
-  }, [handleGetPostData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return loading ? (
     <ProgressSpinner />
@@ -105,7 +105,7 @@ function Post({ postId }: PostProps) {
                     Posted: {convertToLocaleDate(postData.post.createdAt)}
                   </div>
                 </div>
-                {token && (
+                {postData.creator.id === user?.id && (
                   <Button
                     label="Edit post"
                     icon="pi pi-file-edit"

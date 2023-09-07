@@ -1,14 +1,14 @@
 import { FormikErrors } from "formik";
 import { Editor, EditorTextChangeEvent } from "primereact/editor";
-import { CreatePostFromData } from "../forms/types";
+import { CreatePostFromData, EditPostFromData } from "../forms/types";
 
 interface TextEditorProps {
-  values: CreatePostFromData;
+  values: CreatePostFromData | EditPostFromData;
   setFieldValue: (
     field: string,
     value: string,
     shouldValidate?: boolean | undefined
-  ) => Promise<void | FormikErrors<CreatePostFromData>>;
+  ) => Promise<void | FormikErrors<CreatePostFromData | EditPostFromData>>;
 }
 
 function TextEditor({ setFieldValue, values }: TextEditorProps) {

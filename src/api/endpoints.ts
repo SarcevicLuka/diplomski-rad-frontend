@@ -23,6 +23,8 @@ export const UserRoutes = {
 export const PostRoutes = {
   CREATE_POST: "posts/create",
 
+  EDIT_POST: (postId?: string) => `posts/${postId}/edit`,
+
   CREATE_COMMENT: (postId?: string) => `posts/${postId}/comments/create`,
 
   DELETE_COMMENT: (commentId?: string) => `comments/${commentId}/delete`,

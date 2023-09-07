@@ -1,22 +1,11 @@
 import WatchIcon from "@mui/icons-material/Watch";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
-import ImageIcon from "@mui/icons-material/Image";
-import {
-  CreatePostData,
-  CreatePostFromData,
-  WatchUserData,
-  ImageData,
-} from "./types";
+import { EditPostData, WatchUserData, EditPostFromData } from "./types";
 import { Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import TextEditor from "../richTextEditor/TextEditor";
-import {
-  FileUpload,
-  FileUploadRemoveEvent,
-  FileUploadSelectEvent,
-} from "primereact/fileupload";
 import classNames from "classnames";
 import { checkErrors } from "../../utils/formik";
 import { Button } from "primereact/button";
@@ -25,20 +14,14 @@ import { PostRoutes } from "../../api/endpoints";
 import { useNavigate } from "react-router-dom";
 import { AvailableRoutes } from "../../routes/AvailableRoutes";
 import FormContentDivider from "../FormContentDivider";
+import { PostData } from "../post/types";
+import { useMemo } from "react";
 
-const initialValues: CreatePostFromData = {
-  brand: "",
-  model: "",
-  diameter: 0,
-  lugWidth: 0,
-  caseMaterial: "",
-  mechanismModel: "",
-  review: "",
-  score: 0,
-  images: [],
-};
+interface EditArticleFormProps {
+  postData: PostData;
+}
 
-const CreatePostSchema = Yup.object().shape({
+const EditPostSchema = Yup.object().shape({
   brand: Yup.string().required("Required"),
   model: Yup.string().required("Required"),
   diameter: Yup.number().min(0).required("Required"),
@@ -47,23 +30,34 @@ const CreatePostSchema = Yup.object().shape({
   mechanismModel: Yup.string().required("Required"),
   review: Yup.string().required("Required"),
   score: Yup.number().required("Required"),
-  images: Yup.array().max(10, "10 images max"),
 });
 
-function ArticleForm() {
+function EditArticleForm({ postData }: EditArticleFormProps) {
   const { axiosInstance } = useAxios();
-  let uploadImages: Array<string> = [];
   const navigation = useNavigate();
 
-  const handleCreatePost = (
-    values: CreatePostData,
-    actions: FormikHelpers<CreatePostFromData>
+  const initialValues: EditPostFromData = useMemo(() => {
+    return {
+      brand: postData?.watchData?.brand ?? " ",
+      model: postData?.watchData?.model ?? " ",
+      diameter: postData?.watchData?.diameter ?? 0,
+      lugWidth: postData?.watchData?.lugWidth ?? 0,
+      caseMaterial: postData?.watchData?.caseMaterial ?? " ",
+      mechanismModel: postData?.watchData?.mechanismModel ?? " ",
+      review: postData?.post?.text ?? " ",
+      score: postData?.post?.score ?? 0,
+    };
+  }, [postData]);
+
+  const handleEditPost = (
+    values: EditPostData,
+    actions: FormikHelpers<EditPostFromData>
   ) => {
     axiosInstance
-      .post(PostRoutes.CREATE_POST, values)
+      .patch(PostRoutes.EDIT_POST(postData?.post.id), values)
       .then((response) => {
         console.log(response);
-        navigation(AvailableRoutes.Home);
+        //navigation(AvailableRoutes.Post());
       })
       .catch((error) => {
         console.log(error);
@@ -71,7 +65,7 @@ function ArticleForm() {
       .finally(() => actions.setSubmitting(false));
   };
 
-  const insertable = (values: CreatePostFromData): CreatePostData => {
+  const insertable = (values: EditPostFromData): EditPostData => {
     const watchData: WatchUserData = {
       brand: values.brand,
       model: values.model,
@@ -81,17 +75,8 @@ function ArticleForm() {
       mechanismModel: values.mechanismModel,
     };
 
-    const imageData: ImageData[] = [];
-    values.images.forEach((image) => {
-      const data: ImageData = {
-        data: image,
-      };
-      imageData.push(data);
-    });
-
-    const postData: CreatePostData = {
+    const postData: EditPostData = {
       watchData: watchData,
-      images: imageData,
       review: values.review,
       score: values.score,
     };
@@ -103,13 +88,11 @@ function ArticleForm() {
     <Formik
       initialValues={initialValues}
       onSubmit={(values, actions) => {
-        values.images = uploadImages;
         const userValues = insertable(values);
-
         actions.setSubmitting(true);
-        handleCreatePost(userValues, actions);
+        handleEditPost(userValues, actions);
       }}
-      validationSchema={CreatePostSchema}
+      validationSchema={EditPostSchema}
     >
       {({
         values,
@@ -225,7 +208,6 @@ function ArticleForm() {
                   inputId="score"
                   name="score"
                   showButtons
-                  //useGrouping={false}
                   value={values.score}
                   onValueChange={handleChange}
                   min={1}
@@ -240,40 +222,6 @@ function ArticleForm() {
               {checkErrors(errors, touched, "score")}
             </div>
           </div>
-          <FormContentDivider icon={<ImageIcon />} text="Images" />
-          <FileUpload
-            id="images"
-            name="images"
-            multiple
-            accept="image/*"
-            maxFileSize={1000000}
-            emptyTemplate={
-              <p className="m-0">Drag and drop files to here to upload.</p>
-            }
-            uploadOptions={{ className: "hidden" }}
-            onSelect={(e: FileUploadSelectEvent) => {
-              e.files.forEach((file) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onloadend = () => {
-                  const base64data = reader.result;
-                  if (base64data && typeof base64data === "string")
-                    uploadImages.push(base64data);
-                };
-              });
-            }}
-            onRemove={(e: FileUploadRemoveEvent) => {
-              const reader = new FileReader();
-              reader.readAsDataURL(e.file);
-              reader.onloadend = function () {
-                const base64data = reader.result;
-                uploadImages = uploadImages.filter(
-                  (file) => file?.slice(0, 100) !== base64data?.slice(0, 100)
-                );
-              };
-            }}
-          />
-          {checkErrors(errors, touched, "images")}
           <div className="flex justify-content-end mt-5">
             <Button
               className="mr-2"
@@ -285,7 +233,7 @@ function ArticleForm() {
             />
             <Button
               type="submit"
-              label="Create"
+              label="Save"
               icon="pi pi-check"
               disabled={isSubmitting}
             />
@@ -296,4 +244,4 @@ function ArticleForm() {
   );
 }
 
-export default ArticleForm;
+export default EditArticleForm;
