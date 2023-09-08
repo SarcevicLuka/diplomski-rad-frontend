@@ -8,6 +8,7 @@ import AccountPage from "../pages/AccountPage";
 import CreatePostPage from "../pages/CreatePostPage";
 import PostPage from "../pages/PostPage";
 import EditPostPage from "../pages/EditPostPage";
+import SearchPage from "../pages/SearchPage";
 
 type RouteInformation = {
   path: string;
@@ -49,6 +50,11 @@ const RouteConfiguration: RouteInformation[] = [
   {
     path: AvailableRoutes.Post(),
     component: PostPage,
+    visibility: RouteVisibility.Everyone,
+  },
+  {
+    path: AvailableRoutes.Search,
+    component: SearchPage,
     visibility: RouteVisibility.Everyone,
   },
   { path: "*", component: NotFound, visibility: RouteVisibility.Everyone },

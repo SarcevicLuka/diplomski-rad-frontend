@@ -6,4 +6,5 @@ export const AvailableRoutes = {
   CreatePost: "/create",
   EditPost: (postId?: string) => `/posts/${postId ?? ":postId"}/edit`,
   Post: (postId?: string) => `/posts/${postId ?? ":postId"}`,
+  Search: "/search",
 };

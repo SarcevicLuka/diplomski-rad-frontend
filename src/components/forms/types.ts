@@ -35,6 +35,10 @@ export type CreateCommentFromData = {
   score: number;
 };
 
+export type SearchFormData = {
+  searchTerm: string;
+};
+
 export type CreatePostData = {
   watchData: WatchUserData;
   images: ImageData[];

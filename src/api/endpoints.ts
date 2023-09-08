@@ -51,3 +51,11 @@ export const PostRoutes = {
   POST_COMMENTS: (postId: string, page?: number) =>
     `/posts/${postId}/comments${page ? `?page=${page}` : ""}`,
 };
+
+export const SearchRoutes = {
+  SEARCH_USERS: (searchTerm?: string) =>
+    `search/users?searchTerm=${searchTerm}`,
+
+  SEARCH_POSTS: (page: number, searchTerm?: string) =>
+    `search/posts?searchTerm=${searchTerm}&page=${page}&perPage=5`,
+};

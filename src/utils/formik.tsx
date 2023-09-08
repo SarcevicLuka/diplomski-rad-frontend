@@ -2,11 +2,17 @@ import { FormikErrors, FormikTouched } from "formik";
 import { LoginUserData } from "../pages/auth/types";
 import { ReactNode } from "react";
 import { RegisterUserData } from "../pages/auth/types";
-import { CreatePostFromData } from "../components/forms/types";
+import { CreatePostFromData, SearchFormData } from "../components/forms/types";
+
+type FormikTypes =
+  | LoginUserData
+  | RegisterUserData
+  | CreatePostFromData
+  | SearchFormData;
 
 export const checkErrors = (
-  errors: FormikErrors<LoginUserData | RegisterUserData | CreatePostFromData>,
-  touched: FormikTouched<LoginUserData | RegisterUserData | CreatePostFromData>,
+  errors: FormikErrors<FormikTypes>,
+  touched: FormikTouched<FormikTypes>,
   name: string
 ): ReactNode => {
   return (errors as { [key: string]: boolean })[name] &&

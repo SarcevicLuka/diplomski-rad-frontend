@@ -15,7 +15,7 @@ function NavBar() {
           className="mr-2"
         />
       </Link>
-      <Link to={AvailableRoutes.Home}>
+      <Link to={AvailableRoutes.Search}>
         <Button
           label="Search"
           className="search-button ml-2"
