@@ -7,23 +7,26 @@ import { User } from "../../pages/auth/types";
 import UserItem from "./UserItem";
 import { Divider } from "primereact/divider";
 
-interface PeopleListProps {
+interface FollowsListProps {
   userId: string;
 }
 
-function PeopleList({ userId }: PeopleListProps) {
+function FollowsList({ userId }: FollowsListProps) {
   const { axiosInstance } = useAxios();
   const [followers, setFollowers] = useState<User[]>([]);
   const [following, setFollowing] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
+  const [pageFollowing, setPageFollowing] = useState<number>(1);
   const [totalFollowers, setTotalFollowers] = useState<number>(0);
+  const [totalFollowing, setTotalFollowing] = useState<number>(0);
   const useEffectCalled = useRef(false);
 
-  const handleFetchPosts = async (page?: number) => {
+  const handleFetchFollows = async (page?: number) => {
     axiosInstance
       .get(UserRoutes.USER_FOLLOWS(userId, page))
       .then((response) => {
+        console.log("Follows" + response);
         setTotalFollowers(response.data.total);
         response.data.data.forEach((user: User) => {
           setFollowers((current) => [...current, user]);
@@ -39,10 +42,31 @@ function PeopleList({ userId }: PeopleListProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
+  const handleFetchFollowing = async (page?: number) => {
+    axiosInstance
+      .get(UserRoutes.USER_FOLLOWING(userId, page))
+      .then((response) => {
+        console.log("Following" + response);
+        setTotalFollowing(response.data.total);
+        response.data.data.forEach((user: User) => {
+          setFollowing((current) => [...current, user]);
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setPageFollowing((prev) => prev + 1);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
+
   useEffect(() => {
     if (useEffectCalled.current) return;
     useEffectCalled.current = true;
-    handleFetchPosts();
+    handleFetchFollows();
+    handleFetchFollowing();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -50,12 +74,13 @@ function PeopleList({ userId }: PeopleListProps) {
     <ProgressSpinner />
   ) : (
     <div className="flex">
-      <div className="flex-1 flex align-item-center justify-content-center">
+      <div className="flex-1 flex-column flex align-item-center justify-content-center">
+        <div>Following: {totalFollowers} people</div>
         <InfiniteScroll
           next={() => {
             console.log("infinite scroll");
             console.log(page);
-            handleFetchPosts(page);
+            handleFetchFollows(page);
           }}
           hasMore={Math.ceil(totalFollowers / 15) === page}
           loader={<p></p>}
@@ -75,21 +100,22 @@ function PeopleList({ userId }: PeopleListProps) {
         </InfiniteScroll>
       </div>
       <Divider layout="vertical" />
-      <div className="flex-1 flex align-item-center justify-content-center">
+      <div className="flex-1 flex-column flex align-item-center justify-content-center">
+        <div className="mb-3">Followers: {totalFollowing} people</div>
         <InfiniteScroll
           next={() => {
             console.log("infinite scroll");
-            console.log(page);
-            handleFetchPosts(page);
+            console.log(pageFollowing);
+            handleFetchFollowing(pageFollowing);
           }}
-          hasMore={Math.ceil(totalFollowers / 15) === page}
+          hasMore={Math.ceil(totalFollowing / 15) === pageFollowing}
           loader={<p></p>}
           endMessage={
             <p style={{ textAlign: "center" }}>
               <b>End</b>
             </p>
           }
-          dataLength={totalFollowers}
+          dataLength={totalFollowing}
           scrollableTarget={"post-card-item"}
         >
           <div className="overflow-scroll scroll-container" id="post-card-item">
@@ -103,4 +129,4 @@ function PeopleList({ userId }: PeopleListProps) {
   );
 }
 
-export default PeopleList;
+export default FollowsList;

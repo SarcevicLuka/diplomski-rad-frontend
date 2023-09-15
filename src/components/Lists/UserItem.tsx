@@ -15,9 +15,9 @@ function UserItem({ user }: UserItem) {
       <div className="flex align-items-center justify-content-between">
         <Link to={AvailableRoutes.Account(user.id)} reloadDocument>
           <div className="flex align-items-center">
-            <Avatar image={user.avatar} size="xlarge" shape="circle" />
-            <div className="flex flex-column ml-5">
-              <div className="text-2xl">
+            <Avatar image={user.avatar} size="large" shape="circle" />
+            <div className="flex flex-column ml-1 sm:ml-1 md:ml-5">
+              <div className="text-md sm:text-md md:text-2xl">
                 <div>{`${user.firstName} ${user.lastName}`}</div>
               </div>
               <div>Joined: {convertToLocaleDate(user.createdAt)}</div>

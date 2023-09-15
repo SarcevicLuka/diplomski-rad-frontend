@@ -83,29 +83,33 @@ function SearchResultsList({ searchTerm }: SearchResultsListProps) {
           </div>
         </TabPanel>
         <TabPanel header="Posts" rightIcon="pi pi-file ml-2">
-          <InfiniteScroll
-            next={() => {
-              handleFetchSearchPosts();
-            }}
-            hasMore={Math.ceil(totalPosts / 5) >= pagePosts}
-            loader={<p></p>}
-            endMessage={
-              <p style={{ textAlign: "center" }}>
-                <b>End</b>
-              </p>
-            }
-            dataLength={totalPosts}
-            scrollableTarget={"post-card-item"}
-          >
-            <div
-              className="overflow-scroll scroll-container"
-              id="post-card-item"
+          {posts.length === 0 ? (
+            <div>No posts found</div>
+          ) : (
+            <InfiniteScroll
+              next={() => {
+                handleFetchSearchPosts();
+              }}
+              hasMore={Math.ceil(totalPosts / 5) >= pagePosts}
+              loader={<p></p>}
+              endMessage={
+                <p style={{ textAlign: "center" }}>
+                  <b>End</b>
+                </p>
+              }
+              dataLength={totalPosts}
+              scrollableTarget={"post-card-item"}
             >
-              {posts?.map((data) => {
-                return <PostItem post={data} />;
-              })}
-            </div>
-          </InfiniteScroll>
+              <div
+                className="overflow-scroll scroll-container"
+                id="post-card-item"
+              >
+                {posts?.map((data) => {
+                  return <PostItem post={data} />;
+                })}
+              </div>
+            </InfiniteScroll>
+          )}
         </TabPanel>
       </TabView>
     </div>

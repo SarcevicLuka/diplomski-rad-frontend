@@ -62,8 +62,7 @@ function Account() {
       })
       .catch((error) => {
         console.error(error);
-      })
-      .finally();
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
